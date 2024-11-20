@@ -1,0 +1,33 @@
+services:
+  roboyapper:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: dev
+    volumes:
+      - "./database_src:/usr/src/app/src/lib/database_src"
+
+#      - "./frontend:/usr/src/app" # Exploded bc of an exclusion (add whatever needed)
+      - "./frontend/static:/usr/src/app/static"
+      - "./frontend/src/app.css:/usr/src/app/src/app.css"
+      - "./frontend/src/app.css:/usr/src/app/src/app.css"
+      - "./frontend/src/app.d.ts:/usr/src/app/src/app.d.ts"
+      - "./frontend/src/app.d.ts:/usr/src/app/src/hooks.server.ts"
+      - "./frontend/src/app.html:/usr/src/app/src/app.html"
+      - "./frontend/src/routes:/usr/src/app/src/routes"
+      - "./frontend/src/lib/intern:/usr/src/app/src/lib/intern"
+        # also sync Node modules for sveltekit type-syncing
+      - "./frontend/node_modules:/usr/src/app/node_modules"
+
+  roboyapper_worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+      target: dev
+    volumes:
+      - "./worker/src/app.ts:/usr/src/app/src/app.ts"
+      - "./worker/src/lib:/usr/src/app/src/lib"
+      - "./database_src:/usr/src/app/src/database_src"
+  roboyapper_db:
+    ports:
+      - "5432:5432"

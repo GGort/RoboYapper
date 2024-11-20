@@ -1,0 +1,30 @@
+{
+  "name": "worker",
+  "version": "v0.0.1-alpha",
+  "description": "Roboyapper bot worker",
+  "main": "src/app.ts",
+  "packageManager": "yarn@4.3.1",
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/node": "^22.9.1",
+    "@types/pg": "^8",
+    "eslint": "^9.15.0",
+    "globals": "^15.12.0",
+    "nodemon": "^3.1.7",
+    "prettier": "3.3.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.15.0"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc && node ./dist/src/index.js",
+    "dev": "nodemon --watch \"src/**\" --ext \"ts,js,json\" --exec npx tsx ."
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "pg": "^8.13.1",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
+  }
+}

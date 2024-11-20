@@ -1,0 +1,71 @@
+services:
+  roboyapper:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: prod
+    container_name: roboyapper
+    hostname: roboyapper
+    restart: always
+    depends_on:
+      - roboyapper_db
+    networks:
+      - traefik
+      - default
+    ports:
+      - "3000"
+    environment:
+      PORT: 3000
+      ORIGIN: https://${DOMAIN:?err}
+      PROTOCOL_HEADER: x-forwarded-proto
+      HOST_HEADER: x-forwarded-host
+      DB: ${DB:?err}
+      DB_USER: ${DB_USER:?err}
+      DB_PASSWORD: ${DB_PASSWORD:?err}
+      DB_HOST: roboyapper_db
+    env_file:
+      - .env
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.http.routers.roboyapper.rule: Host(`${DOMAIN:?err}`)
+      traefik.http.services.roboyapper.loadbalancer.server.port: 3000
+      traefik.http.services.roboyapper.loadbalancer.server.scheme: https
+      traefik.http.routers.roboyapper.tls: true
+
+  roboyapper_worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+      target: prod
+    container_name: roboyapper_worker
+    hostname: roboyapper_worker
+    restart: always
+    depends_on:
+      - roboyapper_db
+    env_file:
+      - .env
+    environment:
+      DB: ${DB:?err}
+      DB_USER: ${DB_USER:?err}
+      DB_PASSWORD: ${DB_PASSWORD:?err}
+      DISCORD_TOKEN: ${DISCORD_TOKEN:?err}
+      DB_HOST: roboyapper_db
+
+  roboyapper_db:
+    image: postgres:16.4
+    container_name: roboyapper_db
+    hostname: roboyapper_db
+    shm_size: 128mb
+    volumes:
+      - ./store/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB:?err}
+      POSTGRES_USER: ${DB_USER:?err}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?err}
+    restart: always
+
+networks:
+  traefik:
+    name: traefik
+    external: true
