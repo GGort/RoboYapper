@@ -10,9 +10,9 @@ services:
 #      - "./frontend:/usr/src/app" # Exploded bc of an exclusion (add whatever needed)
       - "./frontend/static:/usr/src/app/static"
       - "./frontend/src/app.css:/usr/src/app/src/app.css"
-      - "./frontend/src/app.css:/usr/src/app/src/app.css"
+      # - "./frontend/src/app.css:/usr/src/app/src/app.css"
       - "./frontend/src/app.d.ts:/usr/src/app/src/app.d.ts"
-      - "./frontend/src/app.d.ts:/usr/src/app/src/hooks.server.ts"
+      - "./frontend/src/hooks.server.ts:/usr/src/app/src/hooks.server.ts"
       - "./frontend/src/app.html:/usr/src/app/src/app.html"
       - "./frontend/src/routes:/usr/src/app/src/routes"
       - "./frontend/src/lib/intern:/usr/src/app/src/lib/intern"
