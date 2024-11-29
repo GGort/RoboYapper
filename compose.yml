@@ -30,7 +30,7 @@ services:
       traefik.docker.network: traefik
       traefik.http.routers.roboyapper.rule: Host(`${DOMAIN:?err}`)
       traefik.http.services.roboyapper.loadbalancer.server.port: 3000
-      traefik.http.services.roboyapper.loadbalancer.server.scheme: https
+      traefik.http.services.roboyapper.loadbalancer.server.scheme: http
       traefik.http.routers.roboyapper.tls: true
 
   roboyapper_worker:
