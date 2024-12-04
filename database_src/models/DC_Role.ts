@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity()
 export class DC_Role {
 
-  @PrimaryGeneratedColumn()
-  id!: number;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-  @Column({
-    type: 'varchar',
-  })
-  name!: string;
-
+    @Column({
+        type: "varchar"
+    })
+    name!: string;
+    
 }
