@@ -8,6 +8,7 @@
       <excludeFolder url="file://$MODULE_DIR$/store" />
       <excludeFolder url="file://$MODULE_DIR$/worker/.yarn" />
       <excludeFolder url="file://$MODULE_DIR$/worker/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/worker/dist" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

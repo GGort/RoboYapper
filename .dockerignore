@@ -7,3 +7,5 @@
 /worker/src/database_src
 /worker/node_modules
 /worker/.yarn/
+
+store
