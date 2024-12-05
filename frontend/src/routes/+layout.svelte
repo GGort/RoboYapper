@@ -1,29 +1,37 @@
-<script>
-	import '../app.css';
-	let { children } = $props();
-  import { page } from '$app/stores';
+<script lang="ts">
+    import "../app.css";
 
-  import { Navbar, NavBrand, NavUl, NavLi , NavHamburger, DarkMode, Footer} from "flowbite-svelte";
+    let {data, children} = $props();
+    import {page} from "$app/stores";
 
-  let activeUrl = $derived($page.url.pathname);
+    import {Navbar, NavBrand, NavUl, NavLi, NavHamburger, DarkMode, Footer} from "flowbite-svelte";
+
+    let activeUrl = $derived($page.url.pathname);
 </script>
 
 <div class="min-h-screen">
 
-<Navbar>
-  <NavBrand>Roboyapper</NavBrand>
+    <Navbar>
+        <NavBrand>Roboyapper</NavBrand>
 
-  <div class="flex flex-row">
-    <NavUl {activeUrl}>
-      <NavLi href="/">Home</NavLi>
-    </NavUl>
-    <NavHamburger/>
+        <div class="flex flex-row">
+            <NavUl {activeUrl}>
+                <NavLi href="/">Home</NavLi>
+                <NavLi href="/dashboard">Dashboard</NavLi>
+                {#if data.authorized}
+                    <NavLi href="/api/signout">logout</NavLi>
+                {:else}
+                    <NavLi href="/api/auth">login</NavLi>
+                {/if}
+            </NavUl>
+            <NavHamburger />
 
-    <DarkMode />
-  </div>
-</Navbar>
+            <DarkMode />
+        </div>
+    </Navbar>
+    <h1>{data.authorized} | {data.user?.username}</h1>
 
-{@render children()}
+    {@render children()}
 </div>
 <Footer>
 

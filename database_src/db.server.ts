@@ -3,6 +3,7 @@ import pg from "pg";
 import { DataSource } from "typeorm";
 import { DC_Role } from "./models/DC_Role";
 import {DC_Server} from "./models/DC_Server";
+import {User } from "./models/User";
 
 class TypeOrm {
   private static instance: Promise<DataSource | undefined> | null = null;
@@ -19,7 +20,7 @@ class TypeOrm {
       TypeOrm.instance = new DataSource({
         type: 'postgres',
         driver: pg,
-        entities: [DC_Role, DC_Server],
+        entities: [DC_Role, DC_Server, User],
         synchronize: typeof process.env.SYNCDB !== 'undefined',
 
         host: process.env.DB_HOST,

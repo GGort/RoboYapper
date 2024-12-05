@@ -1,4 +1,5 @@
-import { json, error, redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
+import {discordSetCookies} from "$lib/intern/functions/discord.server";
 
 
 const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID;
@@ -11,7 +12,7 @@ export async function GET({cookies, url}) {
     // fetch returnCode set in the URL parameters.
     const returnCode = url.searchParams.get('code');
     if (!returnCode) {
-        return error(400, "missing Return code");
+        return redirect(302, '/');
     }
 
 
@@ -40,12 +41,7 @@ export async function GET({cookies, url}) {
         return error(502, response.error);
     }
 
-    // redirect user to front page with cookies set
-    const access_token_expires_in = new Date(Date.now() + response.expires_in); // 10 minutes
-    const refresh_token_expires_in = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
-    cookies.set('disco_access_token', response.access_token, {path: '/', sameSite: 'strict', expires: access_token_expires_in});
-    cookies.set('disco_refresh_token', response.refresh_token, {path: '/', sameSite: 'strict', expires: refresh_token_expires_in});
+    await discordSetCookies(response.refresh_token, response.access_token, response.expires_in, cookies);
 
-    // return redirect(302, '/');
-    return json(response)
+    return redirect(302, '/');
 }
