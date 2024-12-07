@@ -6,6 +6,7 @@ export async function load({ locals }) {
             id: locals.user.id,
             username: locals.user.username,
             email: locals.user.email,
+            avatar: locals.user.avatar,
         }
     }
 

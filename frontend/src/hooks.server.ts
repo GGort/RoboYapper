@@ -21,8 +21,6 @@ const securityHeaders = {
 
 export const handle: Handle = async ({event, resolve}) => {
     // Auth
-    console.log(event.request.headers.get('cookie'))
-    console.log(event.request.headers)
     const auth = await validateToken(event.cookies.get('disco_access_token'), event.cookies.get('disco_refresh_token'), event.cookies);
 
     event.locals.authorized = auth.authorized
@@ -34,10 +32,10 @@ export const handle: Handle = async ({event, resolve}) => {
     Object.entries(securityHeaders).forEach(
         ([header, value]) => response.headers.set(header, value)
     );
+
     if (response.headers.get("content-type") == "text/html") {
         response.headers.set("content-type", "text/html; charset=utf-8");
     }
-
 
     return response;
 };

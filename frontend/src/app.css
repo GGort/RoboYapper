@@ -12,4 +12,9 @@ body{
 
     /*Hide Overflow*/
     @apply overflow-x-hidden overflow-y-auto;
+
+    @apply min-h-screen;
+}
+html{
+    @apply min-h-screen;
 }

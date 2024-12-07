@@ -2,8 +2,8 @@ import "reflect-metadata";
 import pg from "pg";
 import { DataSource } from "typeorm";
 import { DC_Role } from "./models/DC_Role";
-import {DC_Server} from "./models/DC_Server";
-import {User } from "./models/User";
+import { DC_Server } from "./models/DC_Server";
+import { User } from "./models/User";
 
 class TypeOrm {
   private static instance: Promise<DataSource | undefined> | null = null;
@@ -11,17 +11,17 @@ class TypeOrm {
   private constructor() {
     // Private constructor to prevent external instantiation
   }
-  public static clean(data: any){
+  public static clean(data: any) {
     return JSON.parse(JSON.stringify(data));
   }
 
   public static getDb(): Promise<DataSource | undefined> {
     if (!TypeOrm.instance) {
       TypeOrm.instance = new DataSource({
-        type: 'postgres',
+        type: "postgres",
         driver: pg,
         entities: [DC_Role, DC_Server, User],
-        synchronize: typeof process.env.SYNCDB !== 'undefined',
+        synchronize: typeof process.env.SYNCDB !== "undefined",
 
         host: process.env.DB_HOST,
         port: Number(process.env.DB_PORT || 5432),
@@ -30,13 +30,14 @@ class TypeOrm {
 
         username: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
-      }).initialize()
+      })
+        .initialize()
         .then((fulfilled) => {
-          console.info('Data Source has been initialized!');
+          console.info("Data Source has been initialized!");
           return fulfilled;
         })
         .catch((err) => {
-          console.error('Error during Data Source initialization', err);
+          console.error("Error during Data Source initialization", err);
           return undefined;
         });
     }
@@ -45,4 +46,3 @@ class TypeOrm {
 }
 
 export default TypeOrm;
-
