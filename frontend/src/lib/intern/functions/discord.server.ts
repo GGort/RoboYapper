@@ -27,6 +27,18 @@ export interface dcUser {
     verified: boolean
 }
 
+export interface partialGuilds {
+    "id": string,
+    "name": string,
+    "icon": string,
+    "banner": string,
+    "owner": boolean,
+    "permissions": string,
+    "features": string[],
+    "approximate_member_count": number,
+    "approximate_presence_count": number
+}
+
 export async function validateToken(authToken: string | undefined, refreshToken: string | undefined, cookies: Cookies): Promise<{
     authorized: boolean,
     authToken?: string,
@@ -97,4 +109,36 @@ export async function discordSetCookies(refresh: string, access: string, ttl: nu
         sameSite: "none",// TODO: check production strictness
         secure: true
     });
+}
+
+export async function discordRequest(url: string, method: "POST" | "GET" | "DELETE", data: any | undefined, access: string): Promise<{
+    succes: boolean,
+    response: any
+}> {
+    let body: any;
+    let contentType: string;
+    if (method === "GET") {
+        body = undefined;
+        contentType = "application/x-www-form-urlencoded";
+    } else {
+        body = JSON.stringify(data);
+        contentType = "application/json";
+    }
+
+    const request = await fetch(`${DISCORD_API_URL}${url}`, {
+        method,
+        body,
+        headers: {
+            "Content-Type": contentType,
+            "Authorization": `Bearer ${access}`
+        }
+    });
+
+    const response = await request.json();
+
+    if (response.error) {
+        return {succes: false, response};
+    }
+
+    return {succes: true, response};
 }
