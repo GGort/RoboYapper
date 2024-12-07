@@ -8,3 +8,5 @@
 compose.override.yml
 
 /store
+.idea
+.vscode
