@@ -27,6 +27,10 @@ ENV NODE_ENV development
 CMD ["yarn", "dev", "--host", "--port", "3000"]
 
 FROM base AS prod
-RUN yarn build
 
-#TODO add production builded version
+# build for production
+RUN yarn build && rm -rf src
+
+# Set Starting command
+CMD ["node", "./build/index.js"]
+
